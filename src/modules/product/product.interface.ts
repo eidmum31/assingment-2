@@ -1,14 +1,14 @@
-type TVariants = {
+export type TVariants = {
   type: string;
   value: string;
 };
 
-type TInventory = {
+export type TInventory = {
   quantity: number;
   instock: boolean;
 };
 
-type TProduct = {
+export type TProduct = {
   name: string;
   description: string;
   price: number;
@@ -17,4 +17,3 @@ type TProduct = {
   variants: TVariants[];
   inventory: TInventory;
 };
-export default TProduct;
