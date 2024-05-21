@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { TProduct, TInventory, TVariants } from './product.interface';
 const VariantsSchema = new Schema<TVariants>({
   type: { type: String, required: [true, 'Type is a required field'] },
@@ -13,7 +13,11 @@ const InventorySchema = new Schema<TInventory>({
 });
 
 export const ProductSchema = new Schema<TProduct>({
-  name: { type: String, required: [true, 'Name is a required field'] },
+  name: {
+    type: String,
+    required: [true, 'Name is a required field'],
+    unique: [true, 'Product id must be unique'],
+  },
   description: {
     type: String,
     required: [true, 'Description is a required field'],
@@ -30,3 +34,5 @@ export const ProductSchema = new Schema<TProduct>({
     required: [true, 'Inventory is a required field'],
   },
 });
+const ProductModel = model<TProduct>('Product', ProductSchema);
+export default ProductModel;
