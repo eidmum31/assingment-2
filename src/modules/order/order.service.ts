@@ -8,7 +8,7 @@ const getOrdersFromDb = async (email: string | undefined) => {
     if (result.length === 0) {
       throw new Error('Order not found');
     }
-    console.log(result);
+
     return result;
   }
   const result = await Order.find();
@@ -17,13 +17,12 @@ const getOrdersFromDb = async (email: string | undefined) => {
 const addNewOrderToDb = async (order: TOrder) => {
   const isStock = await Order.isStockExists(order.productId, order.quantity);
 
-  console.log(isStock);
   let newQuantity: number, newIsStock: boolean;
   if (isStock) {
     newQuantity = isStock?.inventory?.quantity - order.quantity;
     if (newQuantity === 0) newIsStock = false;
     else newIsStock = true;
-    console.log(newQuantity, newIsStock);
+
     await ProductModel.findByIdAndUpdate(
       { _id: order.productId },
       { inventory: { inStock: newIsStock, quantity: newQuantity } },

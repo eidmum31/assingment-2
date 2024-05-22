@@ -24,7 +24,7 @@ const addNewOrder = async (req: Request, res: Response) => {
   try {
     const order = req.body;
     const validatedData = OrderZodSchema.parse(order);
-    console.log(validatedData);
+
     const result = await OrderServices.addNewOrderToDb(validatedData);
 
     res.status(200).json({

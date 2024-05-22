@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
-import { OrderModel, TOrder, UpdateOrderModel } from './order.interface';
+import { OrderModel, TOrder } from './order.interface';
 import ProductModel from '../product/product.model';
-import { TInventory, TProduct } from '../product/product.interface';
+import { TProduct } from '../product/product.interface';
 
-const OrderSchema = new Schema<TOrder, OrderModel, UpdateOrderModel>({
+const OrderSchema = new Schema<TOrder, OrderModel>({
   email: { type: String, required: [true, 'Email is a required field'] },
   productId: {
     type: String,
@@ -17,11 +17,10 @@ OrderSchema.statics.isStockExists = async (
   qty: number,
 ): Promise<TProduct | null> => {
   const result: TProduct | null = await ProductModel.findOne({ _id: id });
-  console.log(result);
   if ((result as TProduct)?.inventory?.quantity >= qty) {
     return result;
   } else return null;
 };
 
-const Order = model<TOrder, OrderModel, UpdateOrderModel>('order', OrderSchema);
+const Order = model<TOrder, OrderModel>('order', OrderSchema);
 export default Order;

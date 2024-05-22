@@ -10,7 +10,6 @@ const getAllProductsFromDb = async (searchTerm: string | undefined) => {
     const result = await ProductModel.find();
     return result;
   } else {
-    console.log(searchTerm);
     const regex = new RegExp(searchTerm, 'i');
     const result = await ProductModel.find({
       $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
@@ -20,10 +19,11 @@ const getAllProductsFromDb = async (searchTerm: string | undefined) => {
 };
 
 const updateProductInDb = async (product: TProduct, productId: string) => {
-  const result = await ProductModel.findByIdAndUpdate(
+  const result = await ProductModel.findOneAndUpdate(
     { _id: productId },
     product,
   );
+
   return result;
 };
 

@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { TInventory, TProduct } from '../product/product.interface';
+import { TProduct } from '../product/product.interface';
 
 export type TOrder = {
   email: string;
