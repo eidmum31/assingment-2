@@ -31,7 +31,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
     const result = await ProductServices.getSingleProductFromDb(productId);
     res.status(200).json({
       success: true,
-      message: 'Product fetched successfully!!',
+      message: 'Product fetched successfully!',
       data: result,
     });
   } catch (err: any) {
