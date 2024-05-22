@@ -8,9 +8,11 @@ const getOrders = async (req: Request, res: Response) => {
     const result = await OrderServices.getOrdersFromDb(
       email as string | undefined,
     );
+    let succesMsg: string = 'Orders fetched successfully!';
+    if (email) succesMsg = `Orders fetched successfully for user email!`;
     res.status(200).json({
       success: true,
-      message: 'Orders fetched successfully!',
+      message: succesMsg,
       data: result,
     });
   } catch (err: any) {
