@@ -10,9 +10,12 @@ const getAllProducts = async (req: Request, res: Response) => {
     const result = await ProductServices.getAllProductsFromDb(
       searchTerm as string | undefined,
     );
+    let successMsg: string = 'Products fetched successfully!';
+    if (searchTerm)
+      successMsg = `Products matching search term '${searchTerm}' fetched successfully!`;
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!',
+      message: successMsg,
       data: result,
     });
   } catch (err: any) {
