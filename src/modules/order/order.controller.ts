@@ -29,7 +29,7 @@ const addNewOrder = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product created successfully!',
+      message: 'Order created successfully!',
       data: result,
     });
   } catch (err: any) {
