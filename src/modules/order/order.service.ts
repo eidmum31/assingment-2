@@ -5,6 +5,10 @@ import Order from './order.model';
 const getOrdersFromDb = async (email: string | undefined) => {
   if (email) {
     const result = await Order.find({ email: email });
+    if (result.length === 0) {
+      throw new Error('Order not found');
+    }
+    console.log(result);
     return result;
   }
   const result = await Order.find();
