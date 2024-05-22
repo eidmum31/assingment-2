@@ -5,7 +5,7 @@ const addNewProductToDb = async (product: TProduct) => {
   const result = await ProductModel.create(product);
   return result;
 };
-const getAllProductsFromDb = async (searchTerm: string) => {
+const getAllProductsFromDb = async (searchTerm: string | undefined) => {
   if (!searchTerm) {
     const result = await ProductModel.find();
     return result;
@@ -28,7 +28,7 @@ const updateProductInDb = async (product: TProduct, productId: string) => {
 };
 
 const deleteProductInDb = async (productId: string) => {
-  const result = await ProductModel.deleteOne({ _id: productId });
+  const result = await ProductModel.deleteMany({ _id: productId });
   return result;
 };
 const getSingleProductFromDb = async (productId: string) => {

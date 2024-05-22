@@ -1,17 +1,34 @@
+import ProductModel from '../product/product.model';
 import { TOrder } from './order.interface';
-import OrderModel from './order.model';
+import Order from './order.model';
 
-const getOrdersFromDb = async (email: string) => {
+const getOrdersFromDb = async (email: string | undefined) => {
   if (email) {
-    const result = await OrderModel.find({ email: email });
+    const result = await Order.find({ email: email });
     return result;
   }
-  const result = await OrderModel.find();
+  const result = await Order.find();
   return result;
 };
 const addNewOrderToDb = async (order: TOrder) => {
-  const result = await OrderModel.create(order);
-  return result;
+  const isStock = await Order.isStockExists(order.productId, order.quantity);
+
+  console.log(isStock);
+  let newQuantity: number, newIsStock: boolean;
+  if (isStock) {
+    newQuantity = isStock?.inventory?.quantity - order.quantity;
+    if (newQuantity === 0) newIsStock = false;
+    else newIsStock = true;
+    console.log(newQuantity, newIsStock);
+    await ProductModel.findByIdAndUpdate(
+      { _id: order.productId },
+      { inventory: { inStock: newIsStock, quantity: newQuantity } },
+    );
+    const result = await Order.create(order);
+    return result;
+  } else {
+    throw new Error('Insufficient quantity available in inventory');
+  }
 };
 export const OrderServices = {
   getOrdersFromDb,

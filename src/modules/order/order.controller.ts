@@ -1,31 +1,43 @@
 import { Request, Response } from 'express';
 import { OrderServices } from './order.service';
+import OrderZodSchema from './order.validation';
 
 const getOrders = async (req: Request, res: Response) => {
   try {
-    const { email } = req.query;
-    const result = await OrderServices.getOrdersFromDb(email);
+    const email = req.query.email;
+    const result = await OrderServices.getOrdersFromDb(
+      email as string | undefined,
+    );
     res.status(200).json({
       success: true,
       message: 'Orders fetched successfully!',
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
   }
 };
 const addNewOrder = async (req: Request, res: Response) => {
   try {
     const order = req.body;
+    const validatedData = OrderZodSchema.parse(order);
+    console.log(validatedData);
+    const result = await OrderServices.addNewOrderToDb(validatedData);
 
-    const result = await OrderServices.addNewOrderToDb(order);
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 

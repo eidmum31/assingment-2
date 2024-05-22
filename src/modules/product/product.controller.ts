@@ -1,20 +1,26 @@
 import { Request, Response } from 'express';
 
 import { ProductServices } from './product.service';
-import { error } from 'console';
+
+import ProductZodSchema from './product.validation';
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const { searchTerm } = req.query;
-    console.log(searchTerm);
-    const result = await ProductServices.getAllProductsFromDb(searchTerm);
+    const result = await ProductServices.getAllProductsFromDb(
+      searchTerm as string | undefined,
+    );
     res.status(200).json({
       success: true,
       message: 'Products fetched successfully!!',
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
   }
 };
 
@@ -28,22 +34,31 @@ const getSingleProduct = async (req: Request, res: Response) => {
       message: 'Product fetched successfully!!',
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
   }
 };
 
 const addNewProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body;
-    const result = await ProductServices.addNewProductToDb(product);
+    const validatedProduct = ProductZodSchema.parse(product);
+    const result = await ProductServices.addNewProductToDb(validatedProduct);
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
   }
 };
 
@@ -59,8 +74,12 @@ const updateProduct = async (req: Request, res: Response) => {
       message: 'Product updated successfully!',
       data: result,
     });
-  } catch (err) {
-    console.log(error);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
   }
 };
 
@@ -72,10 +91,14 @@ const deleteProduct = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Product deleted successfully!',
-      data: result,
+      data: null,
     });
-  } catch (err) {
-    console.log(error);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
   }
 };
 

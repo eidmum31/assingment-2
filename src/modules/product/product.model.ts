@@ -6,7 +6,7 @@ const VariantsSchema = new Schema<TVariants>({
 });
 const InventorySchema = new Schema<TInventory>({
   quantity: { type: Number, required: [true, 'Quantity is a required field'] },
-  instock: {
+  inStock: {
     type: Boolean,
     required: [true, 'Stock numbers is a required field'],
   },
