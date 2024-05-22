@@ -12,7 +12,7 @@ const getAllProducts = async (req: Request, res: Response) => {
     );
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!!',
+      message: 'Products fetched successfully!',
       data: result,
     });
   } catch (err: any) {
