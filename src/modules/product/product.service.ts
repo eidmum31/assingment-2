@@ -23,16 +23,12 @@ const updateProductInDb = async (product: TProduct, productId: string) => {
   const result = await ProductModel.findByIdAndUpdate(
     { _id: productId },
     product,
-    { upsert: true },
   );
   return result;
 };
 
 const deleteProductInDb = async (productId: string) => {
-  const result = await ProductModel.findByIdAndUpdate(
-    { _id: productId },
-    { isDeleted: true },
-  );
+  const result = await ProductModel.deleteOne({ _id: productId });
   return result;
 };
 const getSingleProductFromDb = async (productId: string) => {

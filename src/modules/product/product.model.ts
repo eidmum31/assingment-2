@@ -16,7 +16,7 @@ export const ProductSchema = new Schema<TProduct>({
   name: {
     type: String,
     required: [true, 'Name is a required field'],
-    unique: [true, 'Product id must be unique'],
+    unique: true,
   },
   description: {
     type: String,
@@ -33,17 +33,6 @@ export const ProductSchema = new Schema<TProduct>({
     type: InventorySchema,
     required: [true, 'Inventory is a required field'],
   },
-  isDeleted: { type: Boolean, default: false },
-});
-
-ProductSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-ProductSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
 });
 
 const ProductModel = model<TProduct>('Product', ProductSchema);
