@@ -10,7 +10,16 @@ const getAllProductsFromDb = async () => {
   return result;
 };
 
+const updateProductInDb = async (product: TProduct, productId: string) => {
+  const result = await ProductModel.findByIdAndUpdate(
+    { _id: productId },
+    product,
+    { upsert: true },
+  );
+  return result;
+};
 export const ProductServices = {
   addNewProductToDb,
   getAllProductsFromDb,
+  updateProductInDb,
 };

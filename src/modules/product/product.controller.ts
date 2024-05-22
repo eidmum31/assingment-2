@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ProductServices } from './product.service';
+import { error } from 'console';
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
@@ -28,7 +29,25 @@ const addNewProduct = async (req: Request, res: Response) => {
   }
 };
 
+const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const product = req.body;
+
+    const { productId } = req.params;
+    console.log(product, productId);
+    const result = await ProductServices.updateProductInDb(product, productId);
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully!',
+      data: result,
+    });
+  } catch (err) {
+    console.log(error);
+  }
+};
+
 export const productControllers = {
   addNewProduct,
   getAllProducts,
+  updateProduct,
 };
