@@ -5,7 +5,9 @@ import { error } from 'console';
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getAllProductsFromDb();
+    const { searchTerm } = req.query;
+    console.log(searchTerm);
+    const result = await ProductServices.getAllProductsFromDb(searchTerm);
     res.status(200).json({
       success: true,
       message: 'Products fetched successfully!!',
@@ -19,6 +21,7 @@ const getAllProducts = async (req: Request, res: Response) => {
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
+
     const result = await ProductServices.getSingleProductFromDb(productId);
     res.status(200).json({
       success: true,
